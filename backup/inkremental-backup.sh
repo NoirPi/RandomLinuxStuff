@@ -47,9 +47,9 @@ filename=${BACKUPNAME}-${DATUM}-${STARTZEIT}.tgz
 
 ### ueberpruefen, ob FullBackup gemacht wird. 1 = Montag, 2 = Dienstag, ...##
 if [ "$wochentag" = '1' ]; then
-        tar --listed-incremental=${BACKUPDIR}/${TIMESTAMP} ${EXCLUDE} --level=0 -cpzf ${BACKUPDIR}/${filename} ${SOURCE}
+        tar --listed-incremental=${BACKUPDIR}/${TIMESTAMP} ${EXCLUDE} --level=0 -cpzf ${BACKUPDIR}/"${filename}" "${SOURCE}"
 else
-        tar --listed-incremental=${BACKUPDIR}/${TIMESTAMP} ${EXCLUDE} -cpzf ${BACKUPDIR}/${filename} ${SOURCE}
+        tar --listed-incremental=${BACKUPDIR}/${TIMESTAMP} ${EXCLUDE} -cpzf ${BACKUPDIR}/"${filename}" "${SOURCE}"
 fi
 
 
@@ -108,15 +108,10 @@ fi
 
 fi
 
-# Erstellen eines Cronjobs für automatische Backups
-CRON_FILE=/var/spool/cron/root
-if [ -f "$FILE" ]; then
-    :
-else
-  ME=$(basename -- "$0")
-  echo "${CRON} bash ${PWD}/${ME}" >> $CRON_FILE
-  /usr/bin/crontab $CRON_FILE
-fi
+### Erstellen eines Cronjobs für automatische Backups ###
+CRON_FILE=$(mktemp /var/spool/cron/root.XXXXXX)
+ME=$(basename -- "$0")
+crontab -l > "${CRON_FILE}" && grep -xF "${CRON} ${PWD}/${ME}" "${CRON_FILE}" || echo "${CRON} ${PWD}/${ME}" >> "${CRON_FILE}" && /usr/bin/crontab "${CRON_FILE}"
 
 ### Loeschen der alten Backups ##
 find "${BACKUPDIR}" -type f -mtime +"${BACKUPALTER}" -delete
