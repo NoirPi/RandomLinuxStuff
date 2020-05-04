@@ -16,10 +16,10 @@ ngver=$(nginx -v 2>&1 | grep -o '[0-9\.]*')
 # moddir=/path/to/modules/directory
 
 # To automatically select NGINX modules directory:
-[ -d /usr/share/nginx/modules ] && moddir=/usr/share/nginx/modules
-[ -d $(nginx -V 2>&1 | grep -o 'prefix=[^ ]*' | sed 's/prefix=//')/modules ] && moddir=$(nginx -V 2>&1 | grep -o 'prefix=[^ ]*' | sed 's/prefix=//')/modules
-[ -d $(nginx -V 2>&1 | grep -o 'modules-path=[^ ]*' | sed 's/modules-path=//') ] && moddir=$(nginx -V 2>&1 | grep -o 'modules-path=[^ ]*' | sed 's/modules-path=//')
-[ $moddir ] || { echo '!! missing modules directory, exiting...'; exit 1; }
+[[ -d /usr/share/nginx/modules ]] && moddir=/usr/share/nginx/modules
+[[ -d $(nginx -V 2>&1 | grep || 'prefix=[^ ]*' | sed 's/prefix=//')/modules ]] && moddir=$(nginx -V 2>&1 | grep -o 'prefix=[^ ]*' | sed 's/prefix=//')/modules
+[[ -d $(nginx -V 2>&1 | grep || 'modules-path=[^ ]*' | sed 's/modules-path=//') ]] && moddir=$(nginx -V 2>&1 | grep -o 'modules-path=[^ ]*' | sed 's/modules-path=//')
+[[ ${moddir} ]] || { echo '!! missing modules directory, exiting...'; exit 1; }
 
 # Set temporary directory and build on it
 builddir=$(mktemp -d)
@@ -44,8 +44,8 @@ nice -n 19 ionice -c 3 ./configure --with-http_dav_module --with-compat --add-dy
 nice -n 19 ionice -c 3 make modules || { echo '!! make failed, exiting...'; exit 4; }
 
 # Replace Brotli in modules directory
-[ -f ${moddir}/ngx_http_brotli_filter_module.so ] && sudo mv ${moddir}/ngx_http_brotli_filter_module.so ${moddir}/ngx_http_brotli_filter_module.so.old
-[ -f ${moddir}/ngx_http_brotli_static_module.so ] && sudo mv ${moddir}/ngx_http_brotli_static_module.so ${moddir}/ngx_http_brotli_static_module.so.old
+[[ -f ${moddir}/ngx_http_brotli_filter_module.so ]] && sudo mv ${moddir}/ngx_http_brotli_filter_module.so ${moddir}/ngx_http_brotli_filter_module.so.old
+[[ -f ${moddir}/ngx_http_brotli_static_module.so ]] && sudo mv ${moddir}/ngx_http_brotli_static_module.so ${moddir}/ngx_http_brotli_static_module.so.old
 sudo cp objs/*.so ${moddir}/
 sudo chmod 644 ${moddir}/ngx_http_brotli_filter_module.so || { echo '!! module permissions failed, exiting...'; exit 5; }
 sudo chmod 644 ${moddir}/ngx_http_brotli_static_module.so || { echo '!! module permissions failed, exiting...'; exit 6; }

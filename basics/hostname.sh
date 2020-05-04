@@ -1,11 +1,11 @@
 #!/bin/bash
-#
+
 usage() {
    echo "usage : $0 <new hostname>"
    exit 1
 }
 
-[ "$1" ] || usage
+[[ "$1" ]] || usage
 
 old=$(hostname)
 new=$1
@@ -20,5 +20,5 @@ for file in \
    /etc/motd \
    /etc/ssmtp/ssmtp.conf
 do
-   [ -f $file ] && sed -i.old -e "s:$old:$new:g" $file
+   [[ -f ${file} ]] && sed -i.old -e "s:$old:$new:g" ${file}
 done

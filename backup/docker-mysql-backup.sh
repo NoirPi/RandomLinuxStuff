@@ -1,15 +1,15 @@
 #!/bin/bash
-# Script fuer Datenbank Backups
+# Script for Database Backups
 
-### Einstellungen ##
-BACKUPALTER="7"                                 ## loescht Backups, die aelter als X Tage sind
-CRON='0 */6 * * *'
-BACKUPDIR="Backup Path"                      ## Pfad zum Speicherort der Backups auf dem Host
-containers=(MariaDB)
-DB_User=USERNAME
-DB_Host=localhost
-DB_Port=5432
-DB_Password=SECRETPASSWORD
+### Settings ##
+MAXDAYS="X"              ## Automatically deletes Backups older then X Days
+CRON='0 */X * * *'       ## crontab time settings
+BACKUPDIR="Backup Path"  ## Path where the backups will be saved
+containers=(MariaDB)     ## Comma separated list of database container names
+DB_User=USERNAME         ## Database super user name
+DB_Host=localhost        ## Database host address
+DB_Port=5432             ## Database port
+DB_Password=XYZ          ## Database super user password
 
 
 ### Erstellen temporaerer Dateien ###
@@ -27,5 +27,5 @@ ME=$(basename -- "$0")
 crontab -l > "${CRON_FILE}" && grep -xF "${CRON} ${PWD}/${ME}" "${CRON_FILE}" || echo "${CRON} ${PWD}/${ME}" >> "${CRON_FILE}" && /usr/bin/crontab "${CRON_FILE}"
 
 ### Loeschen der alten Backups und temporaerer Files ##
-find "${BACKUPDIR}" -type f -mtime +"${BACKUPALTER}" -delete
+find "${BACKUPDIR}" -type f -mtime +"${MAXDAYS}" -delete
 rm "${CRON_FILE}"

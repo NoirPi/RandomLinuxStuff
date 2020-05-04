@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 # configuration for cloudflare
-CLOUDFLARE_EMAIL="your-email@goes-here.com"
-CLOUDFLARE_API_KEY="put-your-key-here"
-CLOUDFLARE_CONFIG_PATH="/etc/letsencrypt"
-DOMAIN="your-domain.com"
-OS_PACKAGE_COMMAND="apt install -y"
+CLOUDFLARE_EMAIL="admin@example.com"            ## Cloudflare Login Email
+CLOUDFLARE_API_KEY="put-your-key-here"          ## Cloudflare API Key
+CLOUDFLARE_CONFIG_PATH="/etc/letsencrypt"       ## Cloudflare Config Path
+DOMAIN="example.com"                            ## Domain
+OS_PACKAGE_COMMAND="apt install -y"             ## os command to install packages (apt, yum)
 
 # as root configure your cloudflare secrets
 mkdir -p ${CLOUDFLARE_CONFIG_PATH}
