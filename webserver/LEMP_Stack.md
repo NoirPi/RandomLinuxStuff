@@ -1,4 +1,4 @@
-#How to Install Nginx with PHP and MySQL (LEMP Stack) on Ubuntu 20.04 LTS
+# How to Install Nginx with PHP and MySQL (LEMP Stack) on Ubuntu 20.04 LTS
 
 
 Nginx (pronounced "engine x") is a free, open-source, high-performance HTTP server. 
@@ -80,7 +80,7 @@ mysql_secure_installation
 ```
 Now you will be asked as the following configuration, and make sure to type your strong password for the MySQL root user.
 
-#####**Important! On the first Question where it asks for Validate Password Component enter ``N``**
+##### **Important! On the first Question where it asks for Validate Password Component enter ``N``**
 ```
 VALIDATE PASSWORD COMPONENT can be used to test passwords
 and improve security. It checks the strength of password
@@ -210,9 +210,9 @@ Choose none option and move the cursor to 'OK'.
 
 For the phpmyadmin database and user configuration, choose 'Yes'.
 
-And type new 'VERY_STRONG' PHPMyAdmin admin such as 'Hakaselabs001@#'.
+And type new 'VERY_STRONG' PHPMyAdmin admin such as 'StrongPassword001@#'.
 
-Repeat the 'Hakaselabs001@#' password.
+Repeat the 'StrongPassword001@#' password.
 ````
 
 And the phpMyAdmin installation on Ubuntu 20.04 is completed.
@@ -220,7 +220,7 @@ And the phpMyAdmin installation on Ubuntu 20.04 is completed.
 ## Step 6 - Configure phpMyAdmin with Nginx and MySQL
 After the phpmyadmin installation, we need to configure phpmyadmin to run under the Nginx web server and configure the MySQL user phpmyadmin access. To run PHPMyAdmin under the Nginx web server, we need to add the configuration to the virtual host configuration file.
 
-####Configure phpMyAdmin with Nginx Webserver
+#### Configure phpMyAdmin with Nginx Webserver
 Now go to the '/etc/nginx' configuration directory, and edit the default virtual host file.
 cd /etc/nginx/conf.d/
 nano default.conf
@@ -254,7 +254,7 @@ systemctl reload nginx
 ```
 And we've added the Nginx configuration for our phpMyAdmin installation, it's accessible through the path URL as 'http://server-ip/phpmyadmin'.
 
-####Allow phpMyAdmin user to Access Databases
+#### Allow phpMyAdmin user to Access Databases
 
 For this tutorial, we will be using non-root MySQL users for PHPMyAdmin. We will create a new user and grant all privileges of all databases inside the server to the user.
 
@@ -263,7 +263,7 @@ Login to the MySQL shell using the following command.
 mysql -u root -p
 Now create a new MySQL user 'your_user' and grant all database privileges.
 
-#####Important! ``replace your_user with your username and your_secret_password with your password``
+##### Important! ``replace your_user with your username and your_secret_password with your password``
 ```
 create user your_user@'localhost' identified by 'your_secret_password';
 grant all privileges on *.* to your_user@'localhost';
@@ -276,10 +276,10 @@ exit
 ```
 As a result, we've created a new MySQL user for the phpMyAdmin.
 
-##Step 7 - Testing
+## Step 7 - Testing
 In this step, we will test our configuration of the LEMP Stack and phpMyAdmin.
 
-####Test PHP File
+#### Test PHP File
 Go to the '/var/www/html' directory and create a new script file 'info.php' using nano editor.
 
 ```
@@ -309,7 +309,7 @@ http://server-ip/phpmyadmin/
 
 And you will get the phpMyAdmin login page.
 
-#####**To login to the phpMyAdmin, type the user that we've created on Step 6.** 
+#####** To login to the phpMyAdmin, type the user that we've created on Step 6.** 
 
 ```The user is 'your_user' with the password you've choosed before, then click the 'Go' button.```
 
