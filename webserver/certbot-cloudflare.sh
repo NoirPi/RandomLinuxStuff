@@ -2,7 +2,7 @@
 
 # configuration for cloudflare
 CLOUDFLARE_EMAIL="admin@example.com"            ## Cloudflare Login Email
-CLOUDFLARE_API_KEY="put-your-key-here"          ## Cloudflare API Key
+CLOUDFLARE_API_KEY="put-your-key-here"          ## Cloudflare API Key [Zone:READ, DNS:EDIT]
 CLOUDFLARE_CONFIG_PATH="/etc/letsencrypt"       ## Cloudflare Config Path
 DOMAIN="example.com"                            ## Domain
 OS_PACKAGE_COMMAND="apt install -y"             ## os command to install packages (apt, yum)
@@ -10,13 +10,12 @@ OS_PACKAGE_COMMAND="apt install -y"             ## os command to install package
 # as root configure your cloudflare secrets
 mkdir -p ${CLOUDFLARE_CONFIG_PATH}
 cat <<CLOUDFLARE_CONFIG > ${CLOUDFLARE_CONFIG_PATH}/cloudflare.ini
-dns_cloudflare_email="${CLOUDFLARE_EMAIL}"
-dns_cloudflare_api_key="${CLOUDFLARE_API_KEY}"
+dns_cloudflare_api_token="${CLOUDFLARE_API_KEY}"
 CLOUDFLARE_CONFIG
 
 # make sure they are hidden, the api key is more powerful than a password!
 chmod 0700 ${CLOUDFLARE_CONFIG_PATH}
-chmod 0400 CLOUDFLARE_CONFIG_PATH/cloudflare.ini
+chmod 0400 ${CLOUDFLARE_CONFIG_PATH}/cloudflare.ini
 
 # install pip, upgrade, then install the cloudflare/certbot tool
 ${OS_PACKAGE_COMMAND} python3-pip
@@ -38,6 +37,7 @@ certbot certonly \
   --quiet \
   --non-interactive \
   --agree-tos \
+  -m ${CLOUDFLARE_EMAIL}\
   --keep-until-expiring \
   --preferred-challenges dns-01 \
   --dns-cloudflare \
